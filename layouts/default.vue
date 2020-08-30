@@ -101,4 +101,8 @@ export default {
   .line-clamp-3 {
     line-clamp: 3 !important;
   }
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+  }
 </style>
