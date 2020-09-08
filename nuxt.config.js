@@ -1,5 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
+require('dotenv').config()
+
 export default {
   /*
   ** Nuxt rendering mode
@@ -16,8 +18,8 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - ' + 'firends.io',
+    title: process.env.npm_package_name || 'friends.io',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -37,12 +39,17 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    '~/plugins/globals',
+    '~/plugins/vue-api-query'
   ],
   /*
   ** Auto import components
   ** See https://nuxtjs.org/api/configuration-components
   */
   components: true,
+  server: {
+    port: process.env.BASE_PORT || 3000
+  },
   /*
   ** Nuxt.js dev-modules
   */
@@ -57,13 +64,9 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/auth'
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {},
   /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
@@ -96,10 +99,42 @@ export default {
       }
     }
   },
+  axios: {
+    baseURL: process.env.BASE_URL || 'http://localhost:8000/api'
+  },
+  auth: {
+    redirect: {
+      login: '/auth/login',
+      logout: '/auth/login',
+      home: '/'
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/login', method: 'post', propertyName: 'access_token' },
+          user: { url: '/profile', method: 'get', propertyName: 'data' }
+        },
+        tokenType: 'Bearer'
+      }
+    }
+  },
+  router: {
+    // middleware: ['auth']
+  },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+    extend (config, ctx) {
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
+      }
+    }
   }
 }
