@@ -37,10 +37,10 @@ export default {
         link: '/favorites'
 
       }, {
-        text: 'Settings',
-        value: 'settings',
-        icon: 'mdi-cog',
-        link: '/settings'
+        text: 'Profile',
+        value: 'profile',
+        icon: 'mdi-account',
+        link: '/profile'
 
       }],
       bottomNav: 'recent'

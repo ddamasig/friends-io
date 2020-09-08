@@ -60,13 +60,26 @@
             large
             color="accent"
             block
+            @click="socialLogin('google')"
+          >
+            <v-icon class="mr-1">
+              mdi-google
+            </v-icon>
+            Login using Google
+          </v-btn>
+        </v-col>
+        <!-- <v-col cols="12">
+          <v-btn
+            large
+            color="accent"
+            block
           >
             <v-icon class="mr-1">
               mdi-account-plus
             </v-icon>
             Create an Account
           </v-btn>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-form>
 
@@ -95,7 +108,7 @@ export default {
   /**
    * Do not use auth middleware for this route.
    */
-  auth: false,
+  auth: 'guest',
 
   /**
    * User the layout without the bottom navigation.
@@ -135,6 +148,12 @@ export default {
         show: false,
         message: null
       }
+    }
+  },
+
+  computed: {
+    baseUrl () {
+      return process.env.BASE_URL
     }
   },
 
@@ -181,6 +200,12 @@ export default {
           this.snackbar.show = true
         }
       }
+    },
+    /**
+     * Attempt to login using socialite
+     */
+    socialLogin (service) {
+      window.location.replace(`${this.baseUrl}/login/google`)
     }
   },
   /**
