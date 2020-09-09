@@ -3,11 +3,6 @@
     <app-bar-default />
 
     <v-row>
-      <v-col cols="12">
-        <h3 class="accent--text text-center">
-          Most Viewed
-        </h3>
-      </v-col>
       <v-col
         v-for="(book, index) in books"
         :key="index"
