@@ -113,6 +113,7 @@ export default {
       local: {
         endpoints: {
           login: { url: '/login', method: 'post', propertyName: 'access_token' },
+          logout: { url: '/logout', method: 'post', propertyName: 'access_token' },
           user: { url: '/profile', method: 'get', propertyName: 'data' }
         },
         tokenType: 'Bearer'

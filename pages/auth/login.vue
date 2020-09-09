@@ -60,6 +60,7 @@
             large
             color="accent"
             block
+            form="none"
             @click="socialLogin('google')"
           >
             <v-icon class="mr-1">
