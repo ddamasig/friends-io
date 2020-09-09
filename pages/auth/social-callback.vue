@@ -41,10 +41,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.v-bounce {
-  margin-left: auto !important;
-  margin-right: auto !important;
-}
-</style>
