@@ -55,10 +55,6 @@ export default {
     }
   },
 
-  created () {
-    console.log(this.$auth.loggedIn)
-  },
-
   methods: {
     /**
      * Unauthorize user then redirect to login page

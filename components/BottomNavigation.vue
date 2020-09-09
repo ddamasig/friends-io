@@ -21,23 +21,23 @@ export default {
   data () {
     return {
       items: [{
-        text: 'Popular',
-        value: 'popular',
-        icon: 'mdi-chart-areaspline',
+        text: '',
+        value: 'home',
+        icon: 'mdi-home',
         link: '/'
       }, {
-        text: 'Browse',
-        value: 'browse',
-        icon: 'mdi-bookshelf',
-        link: '/books'
+        text: '',
+        value: 'notifications',
+        icon: 'mdi-bell',
+        link: '/notifications'
       }, {
-        text: 'Favorites',
+        text: '',
         value: 'favorites',
         icon: 'mdi-heart',
         link: '/favorites'
 
       }, {
-        text: 'Profile',
+        text: '',
         value: 'profile',
         icon: 'mdi-account',
         link: '/profile'

@@ -1,12 +1,24 @@
 <template>
-  <v-container>
-    <p>Please wait...</p>
+  <v-container style="height: 100%;">
+    <v-row align="center" style="height: 100%;">
+      <v-col cols="12" class="text-center">
+        <bounce-loader :loading="true" color="orange" :size="size" />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
 <script>
+import BounceLoader from 'vue-spinner/src/BounceLoader.vue'
+
 export default {
   auth: 'guest',
+
+  layout: 'blank',
+
+  components: {
+    BounceLoader
+  },
 
   data () {
     return {
@@ -29,3 +41,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.v-bounce {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+</style>

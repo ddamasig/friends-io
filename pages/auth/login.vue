@@ -48,6 +48,7 @@
             type="submit"
             form="form"
             :loading="isLoggingIn"
+            :disabled="isLoggingInUsingGoogle"
           >
             <v-icon class="mr-1">
               mdi-login
@@ -61,6 +62,8 @@
             color="accent"
             block
             form="none"
+            :loading="isLoggingInUsingGoogle"
+            :disabled="isLoggingIn"
             @click="socialLogin('google')"
           >
             <v-icon class="mr-1">
@@ -69,18 +72,6 @@
             Login using Google
           </v-btn>
         </v-col>
-        <!-- <v-col cols="12">
-          <v-btn
-            large
-            color="accent"
-            block
-          >
-            <v-icon class="mr-1">
-              mdi-account-plus
-            </v-icon>
-            Create an Account
-          </v-btn>
-        </v-col> -->
       </v-row>
     </v-form>
 
@@ -114,7 +105,7 @@ export default {
   /**
    * User the layout without the bottom navigation.
    */
-  layout: 'login',
+  layout: 'blank',
 
   data () {
     return {
@@ -122,6 +113,7 @@ export default {
        * Controls the loading state of the login button
        */
       isLoggingIn: false,
+      isLoggingInUsingGoogle: false,
       /**
        * Contains the credentials to be passed
        */
@@ -197,7 +189,7 @@ export default {
          * Use snackbar to display what went wrong.
          */
         if (error.response) {
-          this.snackbar.message = error.response.data.message
+          this.snackbar.message = error.response.data.error.message
           this.snackbar.show = true
         }
       }
@@ -206,6 +198,10 @@ export default {
      * Attempt to login using socialite
      */
     socialLogin (service) {
+      if (service === 'google') {
+        this.isLoggingInUsingGoogle = true
+      }
+
       window.location.replace(`${this.baseUrl}/login/google`)
     }
   },
