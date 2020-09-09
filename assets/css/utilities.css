@@ -1,0 +1,13 @@
+.v-btn--add-post {
+    z-index: 100;
+    margin-bottom: 10vh;
+}
+
+.v-btn--load-more {
+    text-transform: none !important;
+}
+
+.v-col--load-more {
+    padding-top: 5vh !important;
+    padding-bottom: 5vh !important;
+}
