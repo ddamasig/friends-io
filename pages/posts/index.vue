@@ -113,7 +113,7 @@ export default {
       this.$refs.searchInput.focus()
     },
     onClickCategory (id) {
-      this.$router.push(`/books/${id}/contents`)
+      this.$router.push(`/posts/${id}/contents`)
     },
     getHeartColor (book) {
       if (book.favorite_at) {

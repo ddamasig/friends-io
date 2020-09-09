@@ -27,10 +27,12 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="accent--text line-clamp-1">
-                {{ post.title }}
+                <strong>
+                  {{ post.uploader ? post.uploader.name : null }}
+                </strong>
               </v-list-item-title>
               <v-list-item-subtitle>
-                {{ post.uploader ? post.uploader.name : null }}, {{ getAge(post.created_at) }}
+                posted {{ getAge(post.created_at) }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -96,6 +98,7 @@
         right
         color="primary"
         class="v-btn--add-post"
+        to="/posts/create"
       >
         <v-icon>mdi-plus</v-icon>
       </v-btn>
