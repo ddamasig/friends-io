@@ -38,7 +38,7 @@
           </v-list-item>
 
           <v-carousel
-            v-if="post.images"
+            v-if="post.images.length > 0"
             :continuous="false"
             :show-arrows="false"
             hide-delimiter-background

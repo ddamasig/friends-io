@@ -29,6 +29,11 @@ export const mutations = {
   SET_DATA (state, data) {
     state.model = data
   },
+  UNSHIFT (state, data) {
+    console.log('unshifting:')
+    console.log(data)
+    state.list.unshift(data)
+  },
   INSERT (state, data) {
     state.list.push(data)
   },
@@ -81,9 +86,7 @@ export const actions = {
     return data
   },
   async save ({ commit }, model) {
-    const response = await this.$axios.post('Posts', model)
-
-    commit('INSERT', response.data.data)
+    const response = await this.$axios.post('posts', model)
 
     return response
   },
