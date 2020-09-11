@@ -121,7 +121,6 @@ export default {
    * Will fetch data before loading the HTML
    */
   // async fetch ({ store }) {
-  //   await store.dispatch('posts/paginate', {})
   // },
 
   /**
@@ -166,7 +165,7 @@ export default {
      * Redirects to detail page
      */
     viewPost (post) {
-      console.log('viewing post')
+      this.$router.push(`/posts/${post.id}`)
     },
     /**
      * Fetch a collection of Post models from the database
@@ -175,8 +174,12 @@ export default {
       this.isLoadingPosts = true
 
       await this.$store.dispatch('posts/paginate', {})
-
-      this.isLoadingPosts = false
+        .then(() => {
+          this.isLoadingPosts = false
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     /**
      * Returns an icon class depending on the parameter

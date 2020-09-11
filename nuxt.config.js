@@ -33,7 +33,8 @@ export default {
   ** Global CSS
   */
   css: [
-    '@/assets/css/utilities.css'
+    '@/assets/css/utilities.css',
+    '@/assets/css/post-show.css'
   ],
   /*
   ** Plugins to load before mounting the App

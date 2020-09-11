@@ -58,7 +58,6 @@ export const actions = {
       query = query.where('status', status)
     }
 
-    console.log(itemsPerPage)
     const { data, meta } = await query
       .page(page)
       .limit(itemsPerPage)

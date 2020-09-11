@@ -12,7 +12,7 @@
 import BounceLoader from 'vue-spinner/src/BounceLoader.vue'
 
 export default {
-  auth: 'guest',
+  auth: false,
 
   layout: 'blank',
 
@@ -26,17 +26,17 @@ export default {
     }
   },
 
-  mounted () {
+  async mounted () {
     this.$auth.setToken('local', `Bearer ${this.token}`)
     this.$auth.setStrategy('local')
 
-    this.$auth.fetchUser()
+    await this.$auth.fetchUser()
       .then(() => {
-        return this.$router.push('/')
+        window.location.href = '/'
       })
       .catch((e) => {
         this.$auth.logout()
-        return this.$router.push(`/auth/${this.$route.query.origin ? this.$route.query.origin : 'register'}?error=Your token appears to be invalid, please try again.`)
+        window.location.href = `/auth/${this.$route.query.origin ? this.$route.query.origin : 'register'}?error=Your token appears to be invalid, please try again.`
       })
   }
 }
