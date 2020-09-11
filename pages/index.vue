@@ -59,20 +59,32 @@
         <v-card-actions>
           <v-btn
             text
-            :color="getThumbColor(post)"
+            :color="getLike(post).color"
             style="text-transform: none;"
-            @click.stop="viewPost(post)"
+            @click="toggleLike(post)"
           >
-            <v-icon class="mr-1">
-              {{ getThumbIcon(post) }}
-            </v-icon>
-            <span>Like</span>
+            <v-badge
+              :content="post.likes_count"
+              :color="getLike(post).color"
+              inline
+            >
+              <v-icon class="mr-1">
+                {{ getLike(post).icon }}
+              </v-icon>
+              <span>Like</span>
+            </v-badge>
           </v-btn>
           <v-btn text color="accent" style="text-transform: none;">
-            <v-icon class="mr-1">
-              mdi-comment-outline
-            </v-icon>
-            <span>Comment</span>
+            <v-badge
+              :content="post.likes_count"
+              color="accent"
+              inline
+            >
+              <v-icon class="mr-1">
+                mdi-comment-outline
+              </v-icon>
+              <span>Comment</span>
+            </v-badge>
           </v-btn>
           <v-spacer />
           <v-btn icon>
@@ -153,6 +165,21 @@ export default {
    */
   methods: {
     /**
+     * Returns an object containing a color and icon class depending if the post is liked by the user
+     */
+    getLike (post) {
+      if (post.is_liked) {
+        return {
+          color: 'primary',
+          icon: 'mdi-thumb-up'
+        }
+      }
+      return {
+        color: 'accent',
+        icon: 'mdi-thumb-up-outline'
+      }
+    },
+    /**
      * Return the full url of the image
      */
     getImageUrl (post, image) {
@@ -166,6 +193,16 @@ export default {
      */
     viewPost (post) {
       this.$router.push(`/posts/${post.id}`)
+    },
+    /**
+     * Creates a new Like model in the backend
+     */
+    async toggleLike (post) {
+      if (post.is_liked) {
+        await this.$store.dispatch('posts/dislike', post)
+        return
+      }
+      await this.$store.dispatch('posts/like', post)
     },
     /**
      * Fetch a collection of Post models from the database

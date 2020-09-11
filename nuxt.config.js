@@ -18,7 +18,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    titleTemplate: '%s - ' + 'firends.io',
+    titleTemplate: '%s - ' + 'friends.io',
     title: process.env.npm_package_name || 'friends.io',
     meta: [
       { charset: 'utf-8' },

@@ -68,13 +68,11 @@
             <v-col cols="3" class="text-center">
               <v-btn
                 color="grey"
-                block
-                width="50%"
                 icon
               >
                 <v-badge
-                  color="primary darken-1"
-                  content="30"
+                  color="accent"
+                  :content="post.likes_count"
                   overlap
                 >
                   <v-icon class="mr-1">
@@ -87,13 +85,11 @@
             <v-col cols="3" class="text-center">
               <v-btn
                 color="grey"
-                block
-                width="50%"
                 icon
               >
                 <v-badge
-                  color="primary darken-1"
-                  content="30"
+                  color="accent"
+                  :content="post.likes_count"
                   overlap
                 >
                   <v-icon class="mr-1">
@@ -106,8 +102,6 @@
             <v-col cols="3" class="text-center">
               <v-btn
                 color="grey"
-                block
-                width="50%"
                 icon
               >
                 <v-icon class="mr-1">

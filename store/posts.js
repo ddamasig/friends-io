@@ -89,6 +89,22 @@ export const actions = {
 
     return response
   },
+  async like ({ commit }, post) {
+    const response = await this.$axios.post(`posts/${post.id}/like`)
+      .then((response) => {
+        commit('UPDATE', response.data)
+      })
+
+    return response
+  },
+  async dislike ({ commit }, post) {
+    const response = await this.$axios.post(`posts/${post.id}/dislike`)
+      .then((response) => {
+        commit('UPDATE', response.data)
+      })
+
+    return response
+  },
   async destroy ({ commit }, model) {
     const response = await this.$axios.delete(`Posts/${model.id}`)
 
