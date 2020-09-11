@@ -23,6 +23,7 @@
     <v-row
       align="end"
       style="height: 92%;"
+      class="pb-5"
     >
       <v-col cols="12" class="pa-0">
         <v-carousel

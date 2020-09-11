@@ -3,20 +3,49 @@
     <v-form
       id="form"
       ref="form"
+      class="px-0"
       @submit.prevent="submit()"
     >
-      <v-row>
-        <v-col cols="12" class="text-center accent--text">
-          <h3>Write a New Post</h3>
+      <v-app-bar app color="light">
+        <v-btn icon to="/">
+          <v-icon>mdi-arrow-left</v-icon>
+        </v-btn>
+
+        <v-toolbar-title>Create Post</v-toolbar-title>
+
+        <v-spacer />
+
+        <v-btn
+          type="submit"
+          form="form"
+          color="primary"
+          :loading="isSubmitting"
+        >
+          Post
+        </v-btn>
+      </v-app-bar>
+      <v-row dense>
+        <v-col cols="12" class="accent--text mb-3">
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-img src="https://picsum.photos/100" />
+            </v-list-item-avatar>
+
+            <v-list-item-content>
+              <v-list-item-title v-text="$auth.user.name" />
+              <v-list-item-subtitle v-text="$auth.user.email" />
+            </v-list-item-content>
+          </v-list-item>
         </v-col>
-        <v-col cols="12" class="py-0">
+        <v-col cols="12" class="pas-0">
           <v-textarea
             v-model="model.description"
             outlined
-            label="What's on your mind?"
+            placeholder="What's on your mind?"
             counter="2048"
-            rows="4"
+            rows="8"
             auto-grow
+            dense
             :rules="rules.description"
           />
         </v-col>
@@ -24,48 +53,32 @@
           <v-autocomplete
             v-model="model.friends"
             :search-input="searchInputs.friends"
-            label="Tag your friends"
+            placeholder="Tag your friends"
+            deletable-chips
+            clearable
+            auto-select-first
+            open-on-clear
             :items="friends"
             item-text="name"
             return-object
             outlined
             multiple
-            chips
+            dense
+            small-chips
           />
         </v-col>
         <v-col cols="12" class="py-0">
           <v-file-input
             ref="attachmentInput"
             v-model="model.images"
-            prepend-icon="mdi-camera"
-            chips
+            prepend-inner-icon="mdi-camera"
+            prepend-icon=""
+            dense
+            small-chips
             multiple
             outlined
-            label="Images"
+            placeholder="Images"
           />
-        </v-col>
-        <v-col cols="12">
-          <v-btn
-            block
-            color="primary"
-            style="text-transform: none"
-            type="submit"
-            form="form"
-            :loading="isSubmitting"
-          >
-            Post
-          </v-btn>
-        </v-col>
-        <v-col cols="12">
-          <v-btn
-            block
-            color="accent"
-            style="text-transform: none"
-            to="/"
-            :disabled="isSubmitting"
-          >
-            Cancel
-          </v-btn>
         </v-col>
       </v-row>
     </v-form>
