@@ -10,17 +10,50 @@
       :value="item.value"
       :to="item.link"
     >
-      <span>{{ item.text }}</span>
-      <v-icon>{{ item.icon }}</v-icon>
+      <v-badge
+        v-if="item.badge"
+        :content="item.badge"
+        color="red"
+        overlap
+      >
+        <v-icon>{{ item.icon }}</v-icon>
+      </v-badge>
+
+      <v-icon v-else>
+        {{ item.icon }}
+      </v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>
 
 <script>
 export default {
+
+  /**
+   * Fetch data from the backend before rendering the HTML
+   */
+  async fetch ({ store }) {
+    await store.dispatch('notifications/paginate')
+  },
+
+  /**
+   * Reactive properties
+   */
   data () {
     return {
-      items: [{
+      bottomNav: 'recent'
+    }
+  },
+
+  /**
+   * Pre-processed data
+   */
+  computed: {
+    notifications () {
+      return this.$store.getters['notifications/list']
+    },
+    items () {
+      return [{
         text: '',
         value: 'home',
         icon: 'mdi-home',
@@ -29,7 +62,8 @@ export default {
         text: '',
         value: 'notifications',
         icon: 'mdi-bell',
-        link: '/notifications'
+        link: '/notifications',
+        badge: this.notifications ? this.notifications.length : null
       }, {
         text: '',
         value: 'favorites',
@@ -42,8 +76,7 @@ export default {
         icon: 'mdi-account',
         link: '/profile'
 
-      }],
-      bottomNav: 'recent'
+      }]
     }
   }
 }

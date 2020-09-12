@@ -199,6 +199,12 @@ export default {
           this.$store.commit('toast/SHOW', error.response.data.message)
         })
     }
-  }
+  },
+  /**
+   * Configure what appears on the title bar.
+   */
+  head: () => ({
+    title: 'Create Post'
+  })
 }
 </script>

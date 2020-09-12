@@ -274,6 +274,12 @@ export default {
         return moment().diff(moment(date), 'month') + ' months ago'
       }
     }
-  }
+  },
+  /**
+   * Configure what appears on the title bar.
+   */
+  head: () => ({
+    title: 'News Feed'
+  })
 }
 </script>
