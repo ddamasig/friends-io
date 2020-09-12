@@ -1,4 +1,4 @@
-# library
+# friends.io
 
 ## Build Setup
 

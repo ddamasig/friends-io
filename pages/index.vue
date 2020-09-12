@@ -64,7 +64,7 @@
             @click="toggleLike(post)"
           >
             <v-badge
-              :content="post.likes_count"
+              :content="post.likes_count + ''"
               :color="getLike(post).color"
               inline
             >
@@ -76,7 +76,7 @@
           </v-btn>
           <v-btn text color="accent" style="text-transform: none;">
             <v-badge
-              :content="post.likes_count"
+              :content="post.likes_count + ''"
               color="accent"
               inline
             >
@@ -157,6 +157,8 @@ export default {
   },
 
   async created () {
+    console.log('process.env.STORAGE_URL')
+    console.log(process.env.STORAGE_URL)
     await this.getPosts()
   },
 
@@ -200,9 +202,11 @@ export default {
     async toggleLike (post) {
       if (post.is_liked) {
         await this.$store.dispatch('posts/dislike', post)
+        this.$store.commit('toast/SHOW', `You disliked ${post.uploader.name}'s post!`)
         return
       }
       await this.$store.dispatch('posts/like', post)
+      this.$store.commit('toast/SHOW', `You liked ${post.uploader.name}'s post!`)
     },
     /**
      * Fetch a collection of Post models from the database
@@ -240,10 +244,10 @@ export default {
      * Returns a trimmed version of a post description
      */
     getShortDescription (post) {
-      if (post && post.description) {
+      if (post && post.description && post.description.length >= 150) {
         return `${post.description.substr(0, 150)}...`
       }
-      return null
+      return post.description
     },
     /**
      * Returns a human-readable version of the date parameter
@@ -260,7 +264,9 @@ export default {
     getAge (date) {
       const minutes = moment().diff(moment(date), 'minutes')
 
-      if (minutes < 60) {
+      if (minutes < 1) {
+        return ' few seconds ago'
+      } else if (minutes < 60) {
         return moment().diff(moment(date), 'minutes') + ' minutes ago'
       } else if (minutes < 1440) {
         return moment().diff(moment(date), 'hours') + ' hours ago'

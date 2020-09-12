@@ -53,6 +53,7 @@
           <v-autocomplete
             v-model="model.friends"
             :search-input="searchInputs.friends"
+            prepend-inner-icon="mdi-account-multiple-plus"
             placeholder="Tag your friends"
             deletable-chips
             clearable
@@ -145,6 +146,7 @@ export default {
      * Publish the post
      */
     async submit () {
+      console.log(this.$store.getters['toast/visibility'])
       /**
        * Validate the form first
        */
@@ -176,8 +178,25 @@ export default {
 
       await this.$store.dispatch('posts/save', formData)
         .then((response) => {
+          /**
+           * Insert the newly created Post in the list
+           */
           this.$store.commit('posts/UNSHIFT', response.data.data)
+          /**
+           * Show a toast to notify user of success
+           */
+          this.$store.commit('toast/SHOW', 'Post created successfully.')
+          /**
+           * Redirect to home
+           */
           this.$router.push('/')
+        })
+        .catch((error) => {
+          /**
+           * Show the user what went wrong
+           */
+          this.isSubmitting = false
+          this.$store.commit('toast/SHOW', error.response.data.message)
         })
     }
   }

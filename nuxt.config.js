@@ -50,6 +50,7 @@ export default {
   */
   components: true,
   server: {
+    host: process.env.HOST || 'http://localhost',
     port: process.env.BASE_PORT || 3000
   },
   /*

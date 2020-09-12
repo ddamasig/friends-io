@@ -21,7 +21,7 @@
     </v-row>
 
     <v-row
-      align="end"
+      align="center"
       style="height: 92%;"
       class="pb-5"
     >
@@ -72,7 +72,7 @@
               >
                 <v-badge
                   color="accent"
-                  :content="post.likes_count"
+                  :content="post.likes_count + ''"
                   overlap
                 >
                   <v-icon class="mr-1">
@@ -89,7 +89,7 @@
               >
                 <v-badge
                   color="accent"
-                  :content="post.likes_count"
+                  :content="post.likes_count + ''"
                   overlap
                 >
                   <v-icon class="mr-1">
