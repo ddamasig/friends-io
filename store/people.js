@@ -1,4 +1,4 @@
-import Notification from '@/models/core/Notification'
+import Friend from '@/models/core/Person'
 
 export const state = () => ({
   model: {
@@ -7,23 +7,18 @@ export const state = () => ({
     email: null
   },
   meta: null,
-  list: [],
-  unreadList: []
+  list: []
 })
 
 export const getters = {
   list: state => state.list,
   meta: state => state.meta,
-  model: state => state.model,
-  unreadList: state => state.unreadList
+  model: state => state.model
 }
 
 export const mutations = {
   SET_LIST (state, data) {
     state.list = data
-  },
-  SET_UNREAD_LIST (state, data) {
-    state.unreadList = data
   },
   SET_META (state, meta) {
     state.meta = meta
@@ -47,12 +42,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async paginate ({ commit }, { page = 1, status = null, itemsPerPage = 20 } = {}) {
-    let query = await Notification
-
-    if (status && status !== 'all') {
-      query = query.where('status', status)
-    }
+  async paginate ({ commit }, { search = null, page = 1, itemsPerPage = 20 } = {}) {
+    const query = await Friend
 
     const { data, meta } = await query
       .page(page)
@@ -60,7 +51,6 @@ export const actions = {
       .get()
 
     commit('SET_LIST', data)
-    commit('SET_UNREAD_LIST', data.filter(notification => notification.read_at === null))
     commit('SET_META', meta)
 
     return data

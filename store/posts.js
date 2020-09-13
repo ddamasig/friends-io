@@ -30,8 +30,6 @@ export const mutations = {
     state.model = data
   },
   UNSHIFT (state, data) {
-    console.log('unshifting:')
-    console.log(data)
     state.list.unshift(data)
   },
   INSERT (state, data) {

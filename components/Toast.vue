@@ -2,14 +2,14 @@
   <div class="text-center ma-2">
     <v-snackbar
       :value="visibility"
-      color="accent"
+      color="primary"
       timeout="2000"
     >
       {{ message }}
 
       <template v-slot:action="{ attrs }">
         <v-btn
-          color="primary"
+          dark
           text
           v-bind="attrs"
         >

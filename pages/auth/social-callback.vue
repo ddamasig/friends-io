@@ -2,7 +2,7 @@
   <v-container style="height: 100%;">
     <v-row align="center" style="height: 100%;">
       <v-col cols="12" class="text-center">
-        <bounce-loader :loading="true" color="orange" :size="size" />
+        <bounce-loader :loading="true" color="#1B498F" />
       </v-col>
     </v-row>
   </v-container>

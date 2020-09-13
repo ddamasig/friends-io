@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import lodash from 'lodash'
+
 export default {
 
   /**
@@ -49,8 +51,8 @@ export default {
    * Pre-processed data
    */
   computed: {
-    notifications () {
-      return this.$store.getters['notifications/list']
+    unreadNotifications () {
+      return this.$store.getters['notifications/unreadList']
     },
     items () {
       return [{
@@ -63,21 +65,65 @@ export default {
         value: 'notifications',
         icon: 'mdi-bell',
         link: '/notifications',
-        badge: this.notifications ? this.notifications.length : null
+        badge: this.unreadNotifications ? this.unreadNotifications.length : null
       }, {
         text: '',
-        value: 'favorites',
-        icon: 'mdi-heart',
-        link: '/favorites'
+        value: 'people',
+        icon: 'mdi-account-group',
+        link: '/people'
 
       }, {
         text: '',
         value: 'profile',
-        icon: 'mdi-account',
+        icon: 'mdi-account-circle',
         link: '/profile'
 
       }]
     }
+  },
+
+  /**
+   * Will be executed once the component has been rendered
+   */
+  mounted () {
+    this.listenForNotifications()
+  },
+
+  /**
+   * Functions that can be used throughout the page
+   */
+  methods: {
+    /**
+     * Fetch user notifications from database
+     */
+    getNotifications: lodash.debounce(async function () {
+      await this.$store.dispatch('notifications/paginate')
+    }, 500),
+    /*
+     * Listen for socket events using laravel echo
+     */
+    listenForNotifications () {
+      this.$echo
+        .channel('friendsio_database_user-channel')
+        .listen('.LikeEvent', (notification) => {
+          this.getNotifications()
+        })
+
+      /**
+       * User private channels after the broadcast authetication issue is fixed
+       */
+
+      // this.$echo
+      //   .channel(`friendsio_database_private-Core.Models.User.${this.$auth.user.id}`)
+      //   .listen('.LikeEvent', (notification) => {
+      //     this.$store.commit('notifications/INSERT', notification)
+      //   })
+      // .listen('Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', (notification) => {
+      //   console.log(notification)
+      //   this.$store.commit('notifications/INSERT', notification)
+      // })
+    }
+
   }
 }
 </script>

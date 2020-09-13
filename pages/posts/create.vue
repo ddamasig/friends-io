@@ -146,7 +146,6 @@ export default {
      * Publish the post
      */
     async submit () {
-      console.log(this.$store.getters['toast/visibility'])
       /**
        * Validate the form first
        */

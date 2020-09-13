@@ -4,7 +4,7 @@
 
     <v-row v-if="isLoadingPosts" align="center" style="height: 100%;">
       <v-col cols="12" class="text-center">
-        <bounce-loader :loading="true" color="orange" />
+        <bounce-loader :loading="true" color="#1B498F" />
       </v-col>
     </v-row>
 
@@ -23,7 +23,7 @@
         >
           <v-list-item>
             <v-list-item-avatar contain color="grey">
-              <v-img src="https://picsum.photos/100" />
+              <v-img :src="`https://picsum.photos/${100 + index}/100`" />
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="accent--text line-clamp-1">
@@ -157,8 +157,6 @@ export default {
   },
 
   async created () {
-    console.log('process.env.STORAGE_URL')
-    console.log(process.env.STORAGE_URL)
     await this.getPosts()
   },
 
@@ -218,9 +216,7 @@ export default {
         .then(() => {
           this.isLoadingPosts = false
         })
-        .catch((error) => {
-          console.log(error)
-        })
+        .catch(() => {})
     },
     /**
      * Returns an icon class depending on the parameter
@@ -271,7 +267,7 @@ export default {
       } else if (minutes < 1440) {
         return moment().diff(moment(date), 'hours') + ' hours ago'
       } else if (minutes < 43800) {
-        return moment().diff(moment(date), 'month') + ' months ago'
+        return moment().diff(moment(date), 'days') + ' days ago'
       }
     }
   },

@@ -42,7 +42,7 @@ export default {
   */
   plugins: [
     '~/plugins/globals',
-    '~/plugins/vue-api-query'
+    '~/plugins/vue-api-query',
   ],
   /*
   ** Auto import components
@@ -60,7 +60,8 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/moment'
+    '@nuxtjs/moment',
+    '@nuxtjs/laravel-echo'
   ],
   /*
   ** Nuxt.js modules
@@ -73,6 +74,15 @@ export default {
     '@nuxtjs/dotenv'
   ],
   /*
+  ** laravel echo
+  ** https://github.com/nuxt-community/laravel-echo
+  */
+  echo: {
+    /* module options */
+    broadcaster: 'socket.io',
+    host: process.env.ECHO_URL || 'http://localhost:6001'
+  },
+  /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
@@ -82,7 +92,8 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: colors.yellow.darken4,
+          // primary: colors.yellow.darken4,
+          primary: '#1B498F',
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,

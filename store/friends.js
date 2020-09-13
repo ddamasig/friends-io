@@ -42,12 +42,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async paginate ({ commit }, { page = 1, status = null, itemsPerPage = 20 } = {}) {
-    let query = await Friend
-
-    if (status && status !== 'all') {
-      query = query.where('status', status)
-    }
+  async paginate ({ commit }, { search = null, page = 1, itemsPerPage = 20 } = {}) {
+    const query = await Friend
 
     const { data, meta } = await query
       .page(page)

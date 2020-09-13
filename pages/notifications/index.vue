@@ -3,27 +3,15 @@
     <v-app-bar app color="light">
       <v-toolbar-title>Notifications</v-toolbar-title>
     </v-app-bar>
-    <v-row dense class="px-0">
+    <v-row class="px-0">
       <v-col cols="12" class="px-0">
-        <v-list
-          three-line
-          class="px-0"
-        >
+        <v-list class="px-0">
           <div
             v-for="(item, index) in notifications"
             :key="index"
             class="px-0"
           >
-            <v-list-item :to="item.link" @click="viewNotification()">
-              <v-list-item-avatar class="my-auto">
-                <v-img src="https://picsum.photos/100/100" />
-              </v-list-item-avatar>
-
-              <v-list-item-content>
-                <v-list-item-title v-text="item.data.message" />
-                <v-list-item-subtitle v-text="getAge(item.created_at)" />
-              </v-list-item-content>
-            </v-list-item>
+            <like-notification :notification="item" />
             <v-divider />
           </div>
         </v-list>
@@ -34,8 +22,16 @@
 
 <script>
 import moment from 'moment'
+import LikeNotification from '~/components/LikeNotification'
 
 export default {
+  /**
+   * Imported components
+   */
+  components: {
+    LikeNotification
+  },
+
   /**
    * Pre-processed data
    */
@@ -61,9 +57,6 @@ export default {
      */
     async getNotifications () {
       await this.$store.dispatch('notifications/paginate', {})
-        .then((response) => {
-          console.log(response)
-        })
     },
     /**
      * Returns the age of the notification
@@ -78,7 +71,7 @@ export default {
       } else if (minutes < 1440) {
         return moment().diff(moment(date), 'hours') + ' hours ago'
       } else if (minutes < 43800) {
-        return moment().diff(moment(date), 'month') + ' months ago'
+        return moment().diff(moment(date), 'days') + ' days ago'
       }
     }
   }
