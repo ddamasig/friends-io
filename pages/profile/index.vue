@@ -36,6 +36,7 @@
             <v-btn
               color="primary"
               elevation="0"
+              :loading="isLoggingOut"
               @click="logout()"
             >
               Logout
@@ -52,6 +53,7 @@
 export default {
   data () {
     return {
+      isLoggingOut: false
     }
   },
 
@@ -60,8 +62,8 @@ export default {
      * Unauthorize user then redirect to login page
      */
     logout () {
+      this.isLoggingOut = true
       this.$auth.logout()
-      this.$router.push('/auth/login')
     }
   }
 }

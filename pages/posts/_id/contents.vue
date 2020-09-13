@@ -5,7 +5,7 @@
     <v-row>
       <app-bar-browse />
       <v-col
-        v-for="(book, index) in books"
+        v-for="(book, index) in posts"
         :key="index"
         cols="12"
         class="px-0"
@@ -59,7 +59,7 @@
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
           </v-card-actions>
-          <v-divider v-if="index !== books.length - 1" class="my-4 mt-5" />
+          <v-divider v-if="index !== posts.length - 1" class="my-4 mt-5" />
         </v-card>
       </v-col>
     </v-row>
@@ -75,7 +75,7 @@ export default {
   },
   data () {
     return {
-      books: [{
+      posts: [{
         id: 1,
         title: 'Learner-Centered Leadership A Blueprint for Transformational Change in Learning Communities',
         description: 'The pace of change in our society is currently accelerating. Old concepts of authority and hierarchy have been challenged by the reality of a networked world, and bedrock ideas about what citizens need to know have been overturned by a constant drive to learn anew. For Devin Vodicka, the response to these challenges is both simple andall-encompassing: it is the learner who is constant in the new world, and therefore educators must empower the learner to drive their journey',

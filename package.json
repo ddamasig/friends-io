@@ -1,5 +1,5 @@
 {
-  "name": "library",
+  "name": "friends.io",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -14,8 +14,13 @@
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "laravel-echo": "^1.8.1",
+    "lodash": "^4.17.20",
+    "moment": "^2.27.0",
     "nuxt": "^2.14.0",
+    "socket.io-client": "^2.3.0",
     "vee-validate": "^3.3.9",
     "vue-api-query": "^1.5.2",
     "vue-spinner": "^1.0.4"
@@ -23,6 +28,7 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.1.0",
     "@nuxtjs/eslint-module": "^2.0.0",
+    "@nuxtjs/laravel-echo": "^1.1.0",
     "@nuxtjs/vuetify": "^1.11.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.5.0",

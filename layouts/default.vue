@@ -35,33 +35,21 @@
     <v-main>
       <nuxt />
     </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+
+    <toast v-if="$store.getters['toast/visibility']" />
+
     <bottom-navigation />
   </v-app>
 </template>
 
 <script>
 import BottomNavigation from '~/components/BottomNavigation.vue'
+import Toast from '~/components/Toast.vue'
 
 export default {
   components: {
-    BottomNavigation
+    BottomNavigation,
+    Toast
   },
   data () {
     return {

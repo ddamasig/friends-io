@@ -18,7 +18,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-head
   */
   head: {
-    titleTemplate: '%s - ' + 'firends.io',
+    titleTemplate: '%s - ' + 'friends.io',
     title: process.env.npm_package_name || 'friends.io',
     meta: [
       { charset: 'utf-8' },
@@ -33,6 +33,8 @@ export default {
   ** Global CSS
   */
   css: [
+    '@/assets/css/utilities.css',
+    '@/assets/css/post-show.css'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -40,7 +42,7 @@ export default {
   */
   plugins: [
     '~/plugins/globals',
-    '~/plugins/vue-api-query'
+    '~/plugins/vue-api-query',
   ],
   /*
   ** Auto import components
@@ -48,6 +50,7 @@ export default {
   */
   components: true,
   server: {
+    host: process.env.HOST || 'http://localhost',
     port: process.env.BASE_PORT || 3000
   },
   /*
@@ -56,7 +59,9 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
-    '@nuxtjs/vuetify'
+    '@nuxtjs/vuetify',
+    '@nuxtjs/moment',
+    '@nuxtjs/laravel-echo'
   ],
   /*
   ** Nuxt.js modules
@@ -69,6 +74,15 @@ export default {
     '@nuxtjs/dotenv'
   ],
   /*
+  ** laravel echo
+  ** https://github.com/nuxt-community/laravel-echo
+  */
+  echo: {
+    /* module options */
+    broadcaster: 'socket.io',
+    host: process.env.ECHO_URL || 'http://localhost:6001'
+  },
+  /*
   ** vuetify module configuration
   ** https://github.com/nuxt-community/vuetify-module
   */
@@ -78,7 +92,8 @@ export default {
       dark: false,
       themes: {
         light: {
-          primary: colors.yellow.darken4,
+          // primary: colors.yellow.darken4,
+          primary: '#1B498F',
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,

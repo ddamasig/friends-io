@@ -7,9 +7,9 @@
   >
     <v-row>
       <v-col class="text-center" cols="12">
-        <h2 class="accent--text">
+        <h2 class="primary--text">
           <v-icon size="30" class="mb-1" color="primary">
-            mdi-account-group
+            mdi-zodiac-libra
           </v-icon>
           friends.io
         </h2>

@@ -6,7 +6,7 @@
           <v-icon size="30" class="mb-1" color="primary">
             mdi-book-open-blank-variant
           </v-icon>
-          Books.io
+          posts.io
         </h2>
         <v-breadcrumbs class="px-0" :items="breadcrumbs">
           <template v-slot:divider>
@@ -14,7 +14,7 @@
           </template>
           <template v-slot:item="{ item }">
             <v-breadcrumbs-item
-              to="/books"
+              to="/posts"
             >
               <v-icon v-if="item.icon">
                 {{ item.icon }}
@@ -33,7 +33,7 @@
           outlined
           hide-details
           label="Type keywords here"
-          :items="books"
+          :items="posts"
           item-text="title"
           item-value="title"
         >
@@ -63,7 +63,7 @@ export default {
       }, {
         text: 'Algebra'
       }],
-      books: [{
+      posts: [{
         id: 1,
         title: 'Learner-Centered Leadership A Blueprint for Transformational Change in Learning Communities',
         description: 'The pace of change in our society is currently accelerating. Old concepts of authority and hierarchy have been challenged by the reality of a networked world, and bedrock ideas about what citizens need to know have been overturned by a constant drive to learn anew. For Devin Vodicka, the response to these challenges is both simple andall-encompassing: it is the learner who is constant in the new world, and therefore educators must empower the learner to drive their journey',

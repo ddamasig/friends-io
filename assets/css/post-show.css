@@ -1,0 +1,10 @@
+.post-show--container {
+    height: 100% !important;
+    background: black;
+}
+
+.post-show--footer {
+    background: black;
+    margin: 0px !important;
+    padding: 0px !important;
+}
