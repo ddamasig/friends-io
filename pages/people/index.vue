@@ -46,21 +46,66 @@
             </div>
           </v-list>
         </v-tab-item>
+
         <v-tab-item class="px-0 mx-0">
           <v-list class="px-0 mx-0">
             <div
-              v-for="(people, index) in people"
+              v-for="(friendRequest, index) in friendRequests"
               :key="index"
             >
-              <v-list-item @click="visitPerson(people)">
+              <v-list-item @click="visitPerson(person)">
                 <v-list-item-avatar class="my-auto">
                   <v-img :src="`https://picsum.photos/${100 + index}/100`" />
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                  <v-list-item-title v-text="people.name" />
-                  <v-list-item-subtitle v-text="people.email" />
+                  <v-list-item-title v-text="`${friendRequest.sender.name} sent you a friend request.`" />
+                  <v-list-item-subtitle v-text="getAge(friendRequest.created_at)" />
+                  <v-list-item-subtitle class="text-right">
+                    <v-btn
+                      small
+                      color="primary"
+                      @click.stop="accept(friendRequest)"
+                    >
+                      Accept
+                    </v-btn>
+                    <v-btn
+                      small
+                      color="red"
+                      dark
+                      @click.stop="reject(friendRequest)"
+                    >
+                      Reject
+                    </v-btn>
+                  </v-list-item-subtitle>
                 </v-list-item-content>
+              </v-list-item>
+              <v-divider />
+            </div>
+          </v-list>
+        </v-tab-item>
+
+        <v-tab-item class="px-0 mx-0">
+          <v-list class="px-0 mx-0">
+            <div
+              v-for="(person, index) in people"
+              :key="index"
+            >
+              <v-list-item @click="visitPerson(person)">
+                <v-list-item-avatar class="my-auto">
+                  <v-img :src="`https://picsum.photos/${100 + index}/100`" />
+                </v-list-item-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-title v-text="person.name" />
+                  <v-list-item-subtitle v-text="person.email" />
+                </v-list-item-content>
+
+                <v-list-item-avatar>
+                  <v-btn icon color="primary" @click="addFriend(person)">
+                    <v-icon>mdi-account-plus</v-icon>
+                  </v-btn>
+                </v-list-item-avatar>
               </v-list-item>
               <v-divider />
             </div>
@@ -72,6 +117,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   /**
    * Retrieve data from the backend before rendering the HTML
@@ -79,6 +126,7 @@ export default {
   async fetch ({ store }) {
     await store.dispatch('friends/paginate')
     await store.dispatch('people/paginate')
+    await store.dispatch('friend-requests/paginate')
   },
 
   /**
@@ -93,6 +141,8 @@ export default {
       tab: 0,
       items: [{
         tab: 'Friends'
+      }, {
+        tab: 'Requests'
       }, {
         tab: 'Discover'
       }]
@@ -114,11 +164,26 @@ export default {
      */
     friends () {
       return this.$store.getters['friends/list']
+    },
+    /**
+     * Returns a collection of Friend instances
+     */
+    friendRequests () {
+      return this.$store.getters['friend-requests/list']
     }
   },
 
   created () {
     this.isLoading = false
+  },
+
+  /**
+   * Will execeute after the HTML is rendered
+   */
+  mounted () {
+    if (this.$route.query.tab) {
+      this.tab = 1
+    }
   },
 
   /**
@@ -129,13 +194,19 @@ export default {
      * Fetch the user's friends from the database
      */
     async getFriends () {
-      await this.$store.dispatch('friends/paginate', { isFriend: true })
+      await this.$store.dispatch('friends/paginate')
+    },
+    /**
+     * Fetch the user's friends from the database
+     */
+    async getFriendRequests () {
+      await this.$store.dispatch('friend-requests/paginate')
     },
     /**
      * Fetch a collection of User instances which are not friends with the user
      */
     async getPeople () {
-      await this.$store.dispatch('friends/paginate', { isFriend: false })
+      await this.$store.dispatch('friends/paginate')
     },
     /**
      * Redirect to a friends profile page
@@ -150,10 +221,58 @@ export default {
       console.log('visiting person')
     },
     /**
+     * Returns the age of the post
+     */
+    getAge (date) {
+      const minutes = moment().diff(moment(date), 'minutes')
+
+      if (minutes < 1) {
+        return ' few seconds ago'
+      } else if (minutes < 60) {
+        return moment().diff(moment(date), 'minutes') + ' minutes ago'
+      } else if (minutes < 1440) {
+        return moment().diff(moment(date), 'hours') + ' hours ago'
+      } else if (minutes < 43800) {
+        return moment().diff(moment(date), 'days') + ' days ago'
+      }
+    },
+    /**
+     * Accept the friend request
+     */
+    async accept (friendRequest) {
+      await this.$store.dispatch('friend-requests/update', {
+        id: friendRequest.id,
+        status: 'accepted'
+      })
+        .then((response) => {
+          this.$store.commit('toast/SHOW', `You are now friends with ${friendRequest.sender.name}.`)
+          this.$store.commit('friend-requests/DELETE', friendRequest)
+          this.$store.commit('friends/INSERT', friendRequest.sender)
+        })
+    },
+    /**
+     * Reject the friend request
+     */
+    async reject (friendRequest) {
+      await this.$store.dispatch('friend-requests/update', {
+        id: friendRequest.id,
+        status: 'rejected'
+      })
+        .then((response) => {
+          this.$store.commit('toast/SHOW', `You are rejected the friend request from ${friendRequest.sender.name}.`)
+          this.$store.commit('friend-requests/DELETE', friendRequest)
+        })
+    },
+    /**
      * Send a friend request
      */
-    sendFriendRequest () {
-      console.log('sending friend request')
+    async addFriend (person) {
+      await this.$store.dispatch('friend-requests/save', {
+        user_id: person.id
+      })
+        .then((response) => {
+          this.$store.commit('toast/SHOW', `Friend request sent to ${person.name}.`)
+        })
     }
   }
 }

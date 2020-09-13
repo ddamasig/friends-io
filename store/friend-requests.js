@@ -1,36 +1,35 @@
-import Post from '@/models/post/Post'
+import FriendRequest from '@/models/core/FriendRequest'
 
 export const state = () => ({
   model: {
     id: null,
-    title: null,
-    description: null,
-    uploader_id: null,
-    uploader: null,
-    created_at: null
+    name: null,
+    email: null
   },
   meta: null,
-  list: []
+  list: [],
+  unreadList: []
 })
 
 export const getters = {
   list: state => state.list,
   meta: state => state.meta,
-  model: state => state.model
+  model: state => state.model,
+  unreadList: state => state.unreadList
 }
 
 export const mutations = {
   SET_LIST (state, data) {
     state.list = data
   },
+  SET_UNREAD_LIST (state, data) {
+    state.unreadList = data
+  },
   SET_META (state, meta) {
     state.meta = meta
   },
   SET_DATA (state, data) {
     state.model = data
-  },
-  UNSHIFT (state, data) {
-    state.list.unshift(data)
   },
   INSERT (state, data) {
     state.list.push(data)
@@ -49,8 +48,7 @@ export const mutations = {
 
 export const actions = {
   async paginate ({ commit }, { page = 1, status = null, itemsPerPage = 20 } = {}) {
-    let query = await Post
-      .include('uploader')
+    let query = await FriendRequest
 
     if (status && status !== 'all') {
       query = query.where('status', status)
@@ -67,15 +65,14 @@ export const actions = {
     return data
   },
   async update ({ commit }, model) {
-    const response = await this.$axios.put(`Posts/${model.id}`, model)
+    const response = await this.$axios.put(`friend-requests/${model.id}`, model)
 
     commit('UPDATE', response.data.data)
 
     return response
   },
   async show ({ commit }, id) {
-    const { data } = await Post
-      .include('addresses')
+    const { data } = await FriendRequest
       .find(id)
 
     commit('SET_DATA', data)
@@ -83,28 +80,12 @@ export const actions = {
     return data
   },
   async save ({ commit }, model) {
-    const response = await this.$axios.post('posts', model)
-
-    return response
-  },
-  async like ({ commit }, post) {
-    const response = await this.$axios.post(`posts/${post.id}/like`)
-      .then((response) => {
-        commit('UPDATE', response.data)
-      })
-
-    return response
-  },
-  async dislike ({ commit }, post) {
-    const response = await this.$axios.post(`posts/${post.id}/dislike`)
-      .then((response) => {
-        commit('UPDATE', response.data)
-      })
+    const response = await this.$axios.post('friend-requests', model)
 
     return response
   },
   async destroy ({ commit }, model) {
-    const response = await this.$axios.delete(`posts/${model.id}`)
+    const response = await this.$axios.delete(`friend-requests/${model.id}`)
 
     commit('DELETE', model)
 

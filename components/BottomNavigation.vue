@@ -32,13 +32,6 @@ import lodash from 'lodash'
 export default {
 
   /**
-   * Fetch data from the backend before rendering the HTML
-   */
-  async fetch ({ store }) {
-    await store.dispatch('notifications/paginate')
-  },
-
-  /**
    * Reactive properties
    */
   data () {
@@ -51,8 +44,17 @@ export default {
    * Pre-processed data
    */
   computed: {
+    /**
+     * Returns a collection of unread Notifications
+     */
     unreadNotifications () {
       return this.$store.getters['notifications/unreadList']
+    },
+    /**
+     * Returns a collection of FriendRequest instances
+     */
+    friendRequests () {
+      return this.$store.getters['friend-requests/list']
     },
     items () {
       return [{
@@ -70,7 +72,8 @@ export default {
         text: '',
         value: 'people',
         icon: 'mdi-account-group',
-        link: '/people'
+        link: '/people',
+        badge: this.friendRequests ? this.friendRequests.length : null
 
       }, {
         text: '',
@@ -80,6 +83,13 @@ export default {
 
       }]
     }
+  },
+
+  /**
+   * Fetch data from the backend before rendering the HTML
+   */
+  async created () {
+    await this.$store.dispatch('notifications/paginate', {})
   },
 
   /**
@@ -99,14 +109,29 @@ export default {
     getNotifications: lodash.debounce(async function () {
       await this.$store.dispatch('notifications/paginate')
     }, 500),
+    /**
+     * Fetch user notifications from database
+     */
+    getFriendRequests: lodash.debounce(async function () {
+      await this.$store.dispatch('friend-requests/paginate')
+    }, 500),
     /*
      * Listen for socket events using laravel echo
      */
     listenForNotifications () {
       this.$echo
-        .channel('friendsio_database_user-channel')
+        .channel(`friendsio_database_user-channel.${this.$auth.user.id}`)
         .listen('.LikeEvent', (notification) => {
+          alert(notification)
           this.getNotifications()
+        })
+
+      this.$echo
+        .channel(`friendsio_database_user-channel.${this.$auth.user.id}`)
+        .listen('.FriendRequestEvent', (request) => {
+          console.log(request)
+          this.getNotifications()
+          this.getFriendRequests()
         })
 
       /**

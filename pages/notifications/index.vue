@@ -11,7 +11,8 @@
             :key="index"
             class="px-0"
           >
-            <like-notification :notification="item" />
+            <like-notification v-if="item.data.type === 'LikeNotification'" :notification="item" />
+            <friend-request-notification v-if="item.data.type === 'FriendRequestNotification'" :notification="item" />
             <v-divider />
           </div>
         </v-list>
@@ -23,13 +24,15 @@
 <script>
 import moment from 'moment'
 import LikeNotification from '~/components/LikeNotification'
+import FriendRequestNotification from '~/components/FriendRequestNotification'
 
 export default {
   /**
    * Imported components
    */
   components: {
-    LikeNotification
+    LikeNotification,
+    FriendRequestNotification
   },
 
   /**

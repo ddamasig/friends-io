@@ -51,6 +51,17 @@ export default {
     BottomNavigation,
     Toast
   },
+
+  /**
+   * Fetch data from the backend before rendering the HTML
+   */
+  async fetch ({ store }) {
+    await store.dispatch('notifications/paginate')
+  },
+
+  /**
+   * Reactive properties
+   */
   data () {
     return {
       clipped: false,
@@ -76,21 +87,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  .line-clamp-1 {
-    line-clamp: 1;
-  }
-
-  .line-clamp-2 {
-    line-clamp: 2;
-  }
-
-  .line-clamp-3 {
-    line-clamp: 3 !important;
-  }
-  ::-webkit-scrollbar {
-    width: 0px;
-    background: transparent; /* make scrollbar transparent */
-  }
-</style>
